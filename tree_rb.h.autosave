@@ -58,11 +58,6 @@ template <class T>
 Node<T> sentinel;
 
 template <class T>
-bool cmp(T a, T b){
-    return a < b;
-}
-
-template <class T>
 void Tree_RB<T>::saveToJSFile(QString fileName, std::function<void (T, QJsonArray &)> inFile){
     if (isEmpty())
         return;
@@ -141,9 +136,8 @@ template <class T>
 Tree_RB<T>::Tree_RB()
         :root(NIL<T>)
         ,size_(0)
-        ,compare(&cmp)
 {
-//    compare = [](T a, T b){return (a < b);};
+    compare = [](T a, T b){return (a < b);};
     (sentinel<T>).color = BLACK;
     (sentinel<T>).left = NIL<T>;
     (sentinel<T>).right = NIL<T>;

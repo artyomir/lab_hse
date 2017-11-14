@@ -1,13 +1,11 @@
-#ifndef LABA_1_DISH_H
-#define LABA_1_DISH_H
+#pragma once
 
 #include <iostream>
 #include <QString>
-#include <QJsonArray>
-#include <QJsonObject>
+#include "dinner.h"
 #include "tree_rb.h"
 
-class Dish {
+class Dish: public Dinner{
 public:
     explicit Dish(QString const & name = "water", double const &weight = 100,
          double const &fat = 0, double const &protein = 0,
@@ -29,18 +27,15 @@ public:
     void set_carboh(double const & carboh);
     void set_org_acids(double const & org_acids);
     void set_fiber(double const & fiber);
-    double caloricity() const;
-    virtual bool compare(Dish * a){
-        return caloricity() < a->caloricity();
-    }
+    virtual double caloricity() const;
+    virtual void inJSFile(QJsonArray & JSArray) const;
+    virtual void fromJSFile(QJsonObject const & obj);
     ~Dish();
 private:
+//    DinnerType type = DISH;
     QString name;
     double weight, fat, protein, carboh, org_acids, fiber;
 };
 
 void Dish_inJSFile(Dish const * dish, QJsonArray & JSArray);
 void Dish_fromJSFile(Tree_RB<Dish *> * tree, QJsonArray & JSArray);
-bool cmp (Dish * a, Dish * b);
-
-#endif //LABA_1_DISH_H

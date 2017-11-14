@@ -58,19 +58,17 @@ template <class T>
 Node<T> sentinel;
 
 template <class T>
-bool cmp(T a, T b){
-    return a < b;
-}
-
-template <class T>
 void Tree_RB<T>::saveToJSFile(QString fileName, std::function<void (T, QJsonArray &)> inFile){
     if (isEmpty())
         return;
+    QFile sequenceFile(fileName);
+    if(!sequenceFile.open(QFile::WriteOnly)){
+        qDebug() << "File for saving not found\n";
+        return;
+    }
     QJsonArray JSArray;
     bypass_inJSFile(root, JSArray, inFile);
     QJsonDocument doc(JSArray);
-    QFile sequenceFile(fileName);
-    sequenceFile.open(QFile::WriteOnly);
     sequenceFile.write(doc.toJson());
     sequenceFile.close();
 }
@@ -78,7 +76,11 @@ void Tree_RB<T>::saveToJSFile(QString fileName, std::function<void (T, QJsonArra
 template <class T>
 void Tree_RB<T>::loadFromJSFile(QString fileName, std::function<void (Tree_RB<T> *, QJsonArray &)> fromFile){
     QFile file (fileName);
-    file.open(QFile::ReadOnly);
+    if(!file.open(QFile::ReadOnly | QFile::Text)){
+        //ui->ErrorInf->setText("<font color=red>Ошибка регистрации.</font>");
+        qDebug() << "File for loading not found\n";
+        return;
+    }
     QString val = file.readAll();
     file.close();
     QJsonDocument doc = QJsonDocument::fromJson(val.toUtf8());
@@ -141,9 +143,8 @@ template <class T>
 Tree_RB<T>::Tree_RB()
         :root(NIL<T>)
         ,size_(0)
-        ,compare(&cmp)
 {
-//    compare = [](T a, T b){return (a < b);};
+    compare = [](T a, T b){return (a < b);};
     (sentinel<T>).color = BLACK;
     (sentinel<T>).left = NIL<T>;
     (sentinel<T>).right = NIL<T>;

@@ -32,7 +32,7 @@ ComplexDinner::ComplexDinner(ComplexDinner const & dinner)
 ComplexDinner::~ComplexDinner(){}
 
 double ComplexDinner::caloricity() const{
-     //return (fat * 9.3 + (protein + carboh) * 4.3 + org_acids * 2.2 + fiber * 1.9) * weight / 100;
+    //return (fat * 9.3 + (protein + carboh) * 4.3 + org_acids * 2.2 + fiber * 1.9) * weight / 100;
     return weight;
 }
 
